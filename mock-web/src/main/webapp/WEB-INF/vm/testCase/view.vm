@@ -1,0 +1,303 @@
+#set($layout="layout/default.vm")
+#set($headerName="用例配置页面")
+#set($headerInfo="用例管理->"+$headerName)
+
+<section class="content">
+    <!-- 查询表单 -->
+    <div class="box box-success">
+        <div class="box-body">
+            <form id="queryForm" class="form-horizontal">
+                <div class="form-group">
+                    <label class="control-label col-sm-1">服务名:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control" name="name" id="cName" placeholder="类名称">
+                    </div>
+                    <label class="control-label col-sm-1">分组名:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control" name="name" id="cName" placeholder="类名称">
+                    </div>
+                    <label class="control-label col-sm-1">状态:</label>
+                    <div class="col-sm-2">
+                        <select name="status" class="form-control">
+                            <option value="">-- 请选择 --</option>
+                            <option value="1">1-开启</option>
+                            <option value="0">0-关闭</option>
+                        </select>
+                    </div>
+                    <label class="control-label col-sm-1">创建人：</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control" name="name" id="cName" placeholder="类名称">
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="btn btn-primary btn-sm" id="btnQuery">查询</button>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="btn btn-success btn-sm" id="btnAddWorkConfig">添加</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+                        <div class="row">
+                            <div class="col-sm-6"></div>
+                            <div class="col-sm-6"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table id="example2" class="table table-bordered table-hover dataTable" role="grid"
+                                       aria-describedby="example2_info">
+                                    <thead>
+                                    <tr role="row">
+                                        <th class="sorting_asc" tabindex="0" aria-controls="example2" rowspan="1"
+                                            colspan="1" aria-sort="ascending"/>
+                                        编号
+                                        </th>
+                                        <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                            colspan="1">
+                                            用例名称
+                                        </th>
+                                        <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                            colspan="1">
+                                            用例分组
+                                        </th>
+                                        <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                            colspan="2">
+                                            用例描述
+                                        </th>
+                                        <th>
+                                            入参
+                                        </th>
+                                        <th>
+                                            出参
+                                        </th>
+                                        <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                            colspan="1">
+                                            创建人
+                                        </th>
+                                        <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                            colspan="1">
+                                            创建时间
+                                        </th>
+                                        <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                            colspan="1">
+                                            修改时间
+                                        </th>
+                                        <th>
+                                            操作
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="testCaseList">
+                                        ##异步加载列表
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
+                                    <ul class="pagination">
+                                        <li class="paginate_button previous" id="example2_previous"><a href="#"
+                                                                                                       aria-controls="example2"
+                                                                                                       data-dt-idx="0"
+                                                                                                       tabindex="0">Previous</a>
+                                        </li>
+                                        <li class="paginate_button "><a href="#" aria-controls="example2"
+                                                                        data-dt-idx="1" tabindex="0">1</a></li>
+                                        <li class="paginate_button "><a href="#" aria-controls="example2"
+                                                                        data-dt-idx="2" tabindex="0">2</a></li>
+                                        <li class="paginate_button "><a href="#" aria-controls="example2"
+                                                                        data-dt-idx="3" tabindex="0">3</a></li>
+                                        <li class="paginate_button next" id="example2_next"><a href="#"
+                                                                                               aria-controls="example2"
+                                                                                               data-dt-idx="7"
+                                                                                               tabindex="0">Next</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
+</section>
+
+
+<script type="text/javascript">
+    $(function() {
+        $("#testCaseList").load("testCase/viewList.do");
+    });
+
+    // 数据列表事件
+    $('#testCaseList').off('click').on('click', '[data-op="update"]', function () {
+        var id = $(this).closest('tr').data('id');
+        goUpdate(id);
+    }).on('click', '[data-op="detail"]', function () {
+        var id = $(this).closest('tr').data('id');
+        goDetail(id);
+    }).on('click', '[data-op="delete"]', function () {
+        var id = $(this).closest('tr').data('id');
+        goDelete(id);
+    }).on('click', '[data-op="showRequestParams"]', function () {
+        var id = $(this).closest('tr').data('id');
+        showRequestParams(id);
+    }).on('click', '[data-op="showResponseParams"]', function () {
+        var id = $(this).closest('tr').data('id');
+        showResponseParams(id);
+    }).on('click', '[data-op="execute"]', function () {
+        var id = $(this).closest('tr').data('id');
+        executeTestCase(id);
+    });
+
+    // 执行页面
+    function executeTestCase(id) {
+        dialog = BootstrapDialog.show({
+            title: '查看入参',
+            closable: true,
+            cssClass: 'large-dialog',
+            closeByBackdrop: false,
+            closeByKeyboard: false,
+            message: function (dialog) {
+                var content = $("<div>加载中...<div>");
+                content.load("/testCase/showParams.do", {
+                    id: id,
+                    type: "execute" // 请求参数
+                });
+                return content;
+            },
+            buttons: [{
+                 label: '执行',
+                 cssClass: 'btn-primary',
+                 action: function (dialog) {
+                     ## var flag = true;
+                     ## var cronExpress = $('#cronExpress').val();
+                     ## if (cronExpress != null && cronExpress != "" && cronExpress != undefined) {
+                     ##     flag = updateCheckCron();
+                     ## }
+                     ## var $form = $("#addConfigForm", dialog.$modalBody);
+                     ## if (!$form.valid() || !flag) {
+                     ##     alert("请按要求填写信息！");
+                     ##     return;
+                     ## }
+                     ## var data = $("#addConfigForm").serializeArray();
+                     ## $.ajax({
+                     ##     url: "/worker/workConfig/addWorkConfig.do",
+                     ##     dataType: 'json',
+                     ##     type: 'post',
+                     ##     data: data,
+                     ##     success: function (data) {
+                     ##         if (data && data.msg == "success") {
+                     ##             alert("添加成功！");
+                     ##             dialog.close();
+                     ##             query(1);
+                     ##         } else {
+                     ##             alert("操作失败");
+                     ##         }
+                     ##     }
+                     ## });
+                 }
+             }, {
+                label: '关闭',
+                cssClass: 'btn-warning',
+                action: function (dialog) {
+                    dialog.close();
+                }
+            }]
+        });
+    }
+
+    // 查看入参
+    function showRequestParams(id) {
+        dialog = BootstrapDialog.show({
+            title: '查看入参',
+            closable: true,
+            cssClass: 'large-dialog',
+            closeByBackdrop: false,
+            closeByKeyboard: false,
+            message: function (dialog) {
+                var content = $("<div>加载中...<div>");
+                content.load("/testCase/showParams.do", {
+                    id: id,
+                    type: "requestParams" // 请求参数
+                });
+                return content;
+            },
+         buttons: [{
+            ##     label: '查看入参',
+            ##     cssClass: 'btn-primary',
+            ##     action: function (dialog) {
+            ##         var flag = true;
+            ##         var cronExpress = $('#cronExpress').val();
+            ##         if (cronExpress != null && cronExpress != "" && cronExpress != undefined) {
+            ##             flag = updateCheckCron();
+            ##         }
+            ##         var $form = $("#addConfigForm", dialog.$modalBody);
+            ##         if (!$form.valid() || !flag) {
+            ##             alert("请按要求填写信息！");
+            ##             return;
+            ##         }
+            ##         var data = $("#addConfigForm").serializeArray();
+            ##         $.ajax({
+            ##             url: "/worker/workConfig/addWorkConfig.do",
+            ##             dataType: 'json',
+            ##             type: 'post',
+            ##             data: data,
+            ##             success: function (data) {
+            ##                 if (data && data.msg == "success") {
+            ##                     alert("添加成功！");
+            ##                     dialog.close();
+            ##                     query(1);
+            ##                 } else {
+            ##                     alert("操作失败");
+            ##                 }
+            ##             }
+            ##         });
+            ##     }
+            ## }, {
+                label: '关闭',
+                cssClass: 'btn-warning',
+                action: function (dialog) {
+                    dialog.close();
+                }
+            }]
+        });
+    }
+
+    // 查看出参
+    function showResponseParams(id) {
+        dialog = BootstrapDialog.show({
+            title: '查看入参',
+            closable: true,
+            cssClass: 'large-dialog',
+            closeByBackdrop: false,
+            closeByKeyboard: false,
+            message: function (dialog) {
+                var content = $("<div>加载中...<div>");
+                content.load("/testCase/showParams.do", {
+                    id: id,
+                    type: "responseParams" // 请求参数
+                });
+                return content;
+            },
+            buttons: [{
+                label: '关闭',
+                cssClass: 'btn-warning',
+                action: function (dialog) {
+                    dialog.close();
+                }
+            }]
+        });
+    }
+
+</script>
+

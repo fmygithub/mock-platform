@@ -1,0 +1,9 @@
+<section class="content-header">
+    <h1>${headerName}
+        <small>${headerInfo}</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="javascript:void(0)" class="myGoHome"><i class="fa fa-dashboard"></i> 主页</a></li>
+        <li class="active">${headerName}</li>
+    </ol>
+</section>

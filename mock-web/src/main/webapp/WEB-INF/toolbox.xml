@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<toolbox>
+    <tool>
+        <key>dicTools</key>
+        <scope>request</scope>
+        <class>com.fmy.velocity.DicTools</class>
+    </tool>
+    <!--<tool>-->
+        <!--<key>authc</key>-->
+        <!--<scope>request</scope>-->
+        <!--<class>com.jd.fce.security.web.AuthcTools</class>-->
+    <!--</tool>-->
+    <!--<tool>-->
+        <!--<key>myTools</key>-->
+        <!--<scope>request</scope>-->
+        <!--<class>com.jd.fce.ape.web.common.util.MyTools</class>-->
+    <!--</tool>-->
+</toolbox>

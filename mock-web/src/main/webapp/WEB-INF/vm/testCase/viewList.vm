@@ -1,0 +1,20 @@
+#foreach( $item in $result)
+<tr role="row" data-id="$!{item.id}">
+    <td>$!{item.id}</td>
+    <td class="sorting_1">$!{item.name}</td>
+##    <td>$!{item.groupId}</td>
+    <td>kom订单中间件__kom-core</td>
+    <td colspan="2">$!{item.desc}</td>
+    <td><button data-op="showRequestParams" type="button" class="btn btn-warning">查看入参</button></td>
+    <td><button data-op="showResponseParams" type="button" class="btn btn-warning">查看出参</button></td>
+    <td>$!{item.createUser}</td>
+    <td>$!date.format($!{item.createTime})</td>
+    <td>$!date.format($!{item.updateTime})</td>
+    <td>
+        <button type="button" class="btn btn-primary" data-op="execute">执行</button>
+        <a href="javascript:;" data-op="update">修改</a>
+        <a href="javascript:;" data-op="detail">详情</a>
+        <a href="javascript:;" data-op="delete">删除</a>
+    </td>
+</tr>
+#end

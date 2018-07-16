@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="info">
+    <properties>
+        <property name="patternlayout">%d [%t] %-5p [%c] [%L] - %m%n</property>
+        <property name="LOG_HOME">/export/Logs/web.kom.jd.com</property>
+    </properties>
+
+    <Appenders>
+        <Console name="ConsoleM" target="SYSTEM_OUT" follow="true">
+            <PatternLayout pattern="${patternlayout}"/>
+        </Console>
+        <!-- 全局日志 -->
+        <RollingRandomAccessFile name="globalFile" fileName="${LOG_HOME}/global.log"
+                                 filePattern="${LOG_HOME}/global-%i.log" append="true" immediateFlush="false">
+            <PatternLayout pattern="${patternlayout}"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="1GB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="3"/>
+        </RollingRandomAccessFile>
+        <!-- jsf 操作日志 -->
+        <RollingRandomAccessFile name="jsfFile" fileName="${LOG_HOME}/jsf.log" filePattern="${LOG_HOME}/jsf-%i.log"
+                                 append="true" immediateFlush="false">
+            <PatternLayout pattern="${patternlayout}"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="1GB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="1"/>
+        </RollingRandomAccessFile>
+
+
+    </Appenders>
+    <!-- 子目录日志指向设置-->
+    <Loggers>
+        <Root level="INFO">
+            <AppenderRef ref="globalFile"/>
+        </Root>
+        <!-- jsf 相关日志信息 -->
+        <AsyncLogger name="com.jd.jsf" level="error" additivity="false">
+            <AppenderRef ref="jsfFile"/>
+        </AsyncLogger>
+
+    </Loggers>
+</Configuration>
+

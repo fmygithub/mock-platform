@@ -1,0 +1,51 @@
+<div class="box-body">
+    <textarea id="params-text" style="width: 550px;height: 450px;">
+        #if("requestParams" == $!{type})
+            $!{testCase.requestParams}
+        #elseif("responseParams" == $!{type})
+            $!{testCase.responseParams}
+        #end
+    </textarea>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        var srcParams = $("#params-text").val();
+        var targetParams = formatJson(srcParams);
+        // $("#params-text").val(srcParams);
+        $("#params-text").val(targetParams);
+    });
+
+    function formatJson(srcJson) {
+        var res = "";
+        if (srcJson != "") {
+            for (var i = 0, j = 0, k = 0, ii, ele; i < srcJson.length; i++) {
+                //k:缩进，j:""个数
+                ele = srcJson.charAt(i);
+                if (j % 2 == 0 && ele == "}") {
+                    k--;
+                    for (ii = 0; ii < k; ii++) {
+                        ele = "    " + ele;
+                    }
+                    ele = "\n" + ele;
+                } else if (j % 2 == 0 && ele == "{") {
+                    ele += "\n";
+                    k++;
+                    for (ii = 0; ii < k; ii++) {
+                        ele += "    ";
+                    }
+                } else if (j % 2 == 0 && ele == ",") {
+                    ele += "\n";
+                    for (ii = 0; ii < k; ii++) {
+                        ele += "    ";
+                    }
+                } else if (ele == "\"") {
+                    j++;
+                }
+
+                res += ele;
+            }
+        }
+        return res;
+    }
+</script>
